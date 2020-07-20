@@ -20,8 +20,16 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html')
 })
 
+//empty date parameter
+app.get("/api/timestamp/", function (req, res) {
+  let date = new Date()
+  res.json({
+    "unix": date.getTime(),
+    "utc": date.toUTCString()
+  })
+})
 
-// timestamp endpoint
+// non-empty date parameter
 app.get("/api/timestamp/:date_string", function (req, res) {
   let date_string = req.params.date_string
   // validate for correct date input -->2011-10-10T14:48:00  OR -->2011-10-10
@@ -31,7 +39,15 @@ app.get("/api/timestamp/:date_string", function (req, res) {
       "unix": date.getTime(),
       "utc": date.toUTCString()
     })
+  }
+  else if(/\d/.test(date_string)) {
+    let date = new Date(date_string)
+    res.json({
+      "unix": parseInt(date_string),
+      "utc": date.toUTCString()
+    })
   } else {
+    console.log(date_string)
     res.json({
       "error": "Invalid Date"
     })
