@@ -41,13 +41,13 @@ app.get("/api/timestamp/:date_string", function (req, res) {
     })
   }
   else if(/\d/.test(date_string)) {
-    let date = new Date(date_string)
+    let int_date_string = parseInt(date_string)
+    let date = new Date(int_date_string)
     res.json({
-      "unix": parseInt(date_string),
+      "unix": int_date_string,
       "utc": date.toUTCString()
     })
   } else {
-    console.log(date_string)
     res.json({
       "error": "Invalid Date"
     })
